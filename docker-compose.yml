@@ -20,8 +20,8 @@ services:
       context: .
       dockerfile: Dockerfile.dev
       args:
-        USER_ID: ${USER_ID}
-        GROUP_ID: ${GROUP_ID}
+        user_id: ${USER_ID}
+        group_id: ${GROUP_ID}
     profiles:
       - dev
     volumes:
