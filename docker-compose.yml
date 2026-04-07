@@ -26,7 +26,7 @@ services:
       - dev
     volumes:
       - .:/app
-      - ${HOME}/.zsh_history:/home/developer/.zsh_history
+      - zsh-history:/zsh-volume
     environment:
       DATABASE_HOST: postgres
       DATABASE_PORT: 5432
@@ -58,3 +58,4 @@ services:
 
 volumes:
   pgdata:
+  zsh-history:
