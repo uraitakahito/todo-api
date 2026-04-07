@@ -88,16 +88,13 @@ describe('KyselyTodoRepository', () => {
 
   it('should delete a todo', async () => {
     const created = await repository.create({ title: 'To delete' });
-    const isDeleted = await repository.delete(created.id);
-
-    expect(isDeleted).toBe(true);
+    await expect(repository.delete(created.id)).resolves.toBe(true);
 
     const found = await repository.findById(created.id);
     expect(found).toBeUndefined();
   });
 
   it('should return false when deleting non-existent todo', async () => {
-    const isDeleted = await repository.delete(999);
-    expect(isDeleted).toBe(false);
+    await expect(repository.delete(999)).resolves.toBe(false);
   });
 });

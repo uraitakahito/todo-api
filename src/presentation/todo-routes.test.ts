@@ -2,6 +2,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import type { FastifyInstance } from 'fastify';
 import type { Kysely } from 'kysely';
 import type { Database } from '../infrastructure/database.js';
+import type { TodoResponse } from './format.js';
 import { cleanDatabase, createTestApp } from '../test-helpers/setup.js';
 
 let app: FastifyInstance;
@@ -31,7 +32,7 @@ describe('POST /todos', () => {
     });
 
     expect(response.statusCode).toBe(201);
-    const body = response.json();
+    const body = response.json() as TodoResponse;
     expect(body.title).toBe('Learn DDD');
     expect(body.isCompleted).toBe(false);
     expect(body.id).toBeDefined();
@@ -68,7 +69,7 @@ describe('GET /todos', () => {
     const response = await app.inject({ method: 'GET', url: '/todos' });
 
     expect(response.statusCode).toBe(200);
-    const body = response.json();
+    const body = response.json() as TodoResponse[];
     expect(body).toHaveLength(2);
   });
 
@@ -78,7 +79,7 @@ describe('GET /todos', () => {
       url: '/todos',
       payload: { title: 'Todo 1' },
     });
-    const todoId = createRes.json().id;
+    const { id: todoId } = createRes.json() as TodoResponse;
 
     await app.inject({
       method: 'PUT',
@@ -91,15 +92,17 @@ describe('GET /todos', () => {
       method: 'GET',
       url: '/todos?isCompleted=true',
     });
-    expect(completedRes.json()).toHaveLength(1);
-    expect(completedRes.json()[0].isCompleted).toBe(true);
+    const completedTodos = completedRes.json() as TodoResponse[];
+    expect(completedTodos).toHaveLength(1);
+    expect(completedTodos[0]?.isCompleted).toBe(true);
 
     const incompleteRes = await app.inject({
       method: 'GET',
       url: '/todos?isCompleted=false',
     });
-    expect(incompleteRes.json()).toHaveLength(1);
-    expect(incompleteRes.json()[0].isCompleted).toBe(false);
+    const incompleteTodos = incompleteRes.json() as TodoResponse[];
+    expect(incompleteTodos).toHaveLength(1);
+    expect(incompleteTodos[0]?.isCompleted).toBe(false);
   });
 });
 
@@ -110,12 +113,12 @@ describe('GET /todos/:id', () => {
       url: '/todos',
       payload: { title: 'Test todo' },
     });
-    const todoId = createRes.json().id;
+    const { id: todoId } = createRes.json() as TodoResponse;
 
     const response = await app.inject({ method: 'GET', url: `/todos/${todoId}` });
 
     expect(response.statusCode).toBe(200);
-    expect(response.json().title).toBe('Test todo');
+    expect((response.json() as TodoResponse).title).toBe('Test todo');
   });
 
   it('should return 404 for non-existent todo', async () => {
@@ -136,7 +139,7 @@ describe('PUT /todos/:id', () => {
       url: '/todos',
       payload: { title: 'Original' },
     });
-    const todoId = createRes.json().id;
+    const { id: todoId } = createRes.json() as TodoResponse;
 
     const response = await app.inject({
       method: 'PUT',
@@ -145,8 +148,9 @@ describe('PUT /todos/:id', () => {
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.json().title).toBe('Updated');
-    expect(response.json().isCompleted).toBe(true);
+    const body = response.json() as TodoResponse;
+    expect(body.title).toBe('Updated');
+    expect(body.isCompleted).toBe(true);
   });
 
   it('should return 404 for non-existent todo', async () => {
@@ -166,7 +170,7 @@ describe('DELETE /todos/:id', () => {
       url: '/todos',
       payload: { title: 'To delete' },
     });
-    const todoId = createRes.json().id;
+    const { id: todoId } = createRes.json() as TodoResponse;
 
     const response = await app.inject({ method: 'DELETE', url: `/todos/${todoId}` });
     expect(response.statusCode).toBe(204);

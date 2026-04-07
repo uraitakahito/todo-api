@@ -25,7 +25,7 @@ const app = Fastify({ logger: true });
 
 app.setErrorHandler(errorHandler);
 
-app.get('/health', async () => {
+app.get('/health', () => {
   return { status: 'ok' };
 });
 

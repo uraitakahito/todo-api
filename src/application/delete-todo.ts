@@ -5,8 +5,7 @@ export class DeleteTodoUseCase {
   constructor(private readonly todoRepository: TodoRepository) {}
 
   async execute(id: number): Promise<void> {
-    const isDeleted = await this.todoRepository.delete(id);
-    if (!isDeleted) {
+    if (!(await this.todoRepository.delete(id))) {
       throw new TodoNotFoundError(id);
     }
   }
