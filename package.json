@@ -10,9 +10,8 @@
     "dev": "node --watch dist/src/main.js",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:unit": "vitest run src/domain src/application",
-    "test:integration": "vitest run src/infrastructure",
-    "test:e2e": "vitest run src/presentation",
+    "test:unit": "vitest run --project unit",
+    "test:db": "vitest run --project db",
     "migrate": "node dist/src/infrastructure/migrate.js",
     "migrate:down": "node dist/src/infrastructure/migrate.js down"
   },
