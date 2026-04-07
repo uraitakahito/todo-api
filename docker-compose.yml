@@ -22,40 +22,42 @@ services:
       args:
         user_id: ${USER_ID}
         group_id: ${GROUP_ID}
-    profiles:
-      - dev
+        TZ: ${TZ:-Asia/Tokyo}
     volumes:
       - .:/app
       - zsh-history:/zsh-volume
+      - /run/host-services/ssh-auth.sock:/run/host-services/ssh-auth.sock
     environment:
-      DATABASE_HOST: postgres
-      DATABASE_PORT: 5432
-      DATABASE_USER: ${DATABASE_USER}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      DATABASE_NAME: ${DATABASE_NAME}
-      TZ: ${TZ:-Asia/Tokyo}
+      - SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
+      - GH_TOKEN=${GH_TOKEN}
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
     depends_on:
       postgres:
         condition: service_healthy
+    profiles:
+      - dev
 
   prod:
     build:
       context: .
       dockerfile: Dockerfile.prod
-    profiles:
-      - prod
-    ports:
-      - "3000:3000"
     environment:
-      DATABASE_HOST: postgres
-      DATABASE_PORT: 5432
-      DATABASE_USER: ${DATABASE_USER}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      DATABASE_NAME: ${DATABASE_NAME}
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
     depends_on:
       postgres:
         condition: service_healthy
+    profiles:
+      - prod
 
 volumes:
   pgdata:
   zsh-history:
+    name: todo-api-zsh-history
