@@ -46,8 +46,6 @@ npm run migrate
 npm start
 ```
 
-サーバーは `http://localhost:3000` で起動します。
-
 ## API エンドポイント
 
 ### ヘルスチェック
