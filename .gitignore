@@ -1,3 +1,7 @@
+# Downloaded by setup.sh
+Dockerfile.dev
+docker-entrypoint.sh
+
 # Logs
 logs
 *.log
