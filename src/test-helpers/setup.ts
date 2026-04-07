@@ -35,7 +35,7 @@ export async function runMigrations(db: Kysely<Database>): Promise<void> {
 
   const { error } = await migrator.migrateToLatest();
   if (error) {
-    throw error;
+    throw error instanceof Error ? error : new Error('Migration failed');
   }
 }
 
