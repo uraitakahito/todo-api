@@ -1,0 +1,9 @@
+# Ignore everything
+*
+
+# Allow only files needed for Docker build
+!package.json
+!package-lock.json
+!tsconfig.json
+!src/
+!docker-entrypoint.sh
