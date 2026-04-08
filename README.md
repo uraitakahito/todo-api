@@ -1,6 +1,4 @@
-# TODO API - DDD Tutorial
-
-DDD（ドメイン駆動設計）を学ぶための TODO API 教材です。
+# TODO API
 
 ## アーキテクチャ
 
