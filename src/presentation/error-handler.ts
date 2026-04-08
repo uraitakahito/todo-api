@@ -4,7 +4,7 @@ import { TodoNotFoundError, TodoValidationError } from '../domain/errors.js';
 
 export function errorHandler(
   error: Error,
-  _request: FastifyRequest,
+  request: FastifyRequest,
   reply: FastifyReply,
 ): void {
   if (error instanceof TodoNotFoundError) {
@@ -25,5 +25,6 @@ export function errorHandler(
     return;
   }
 
+  request.log.error({ err: error }, 'Unexpected error');
   void reply.status(500).send({ error: 'Internal server error' });
 }

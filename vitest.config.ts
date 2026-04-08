@@ -14,6 +14,7 @@ export default defineConfig({
           include: [
             'src/domain/**/*.test.ts',
             'src/application/**/*.test.ts',
+            'src/presentation/error-handler.test.ts',
           ],
         },
       },
