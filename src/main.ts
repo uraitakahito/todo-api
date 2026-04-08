@@ -7,6 +7,7 @@ import { UpdateTodoUseCase } from './application/update-todo.js';
 import { createDb } from './infrastructure/connection.js';
 import { KyselyTodoRepository } from './infrastructure/kysely-todo-repository.js';
 import { errorHandler } from './presentation/error-handler.js';
+import { registerHealthRoutes } from './presentation/health-routes.js';
 import { registerTodoRoutes } from './presentation/todo-routes.js';
 
 // Infrastructure
@@ -25,9 +26,7 @@ const app = Fastify({ logger: true });
 
 app.setErrorHandler(errorHandler);
 
-app.get('/health', () => {
-  return { status: 'ok' };
-});
+registerHealthRoutes(app, db);
 
 registerTodoRoutes(app, {
   createTodo,
