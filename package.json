@@ -19,7 +19,7 @@
   "license": "Unlicense",
   "dependencies": {
     "fastify": "^5.3.3",
-    "kysely": "^0.28.0",
+    "kysely": "^0.28.17",
     "pg": "^8.13.0",
     "zod": "^3.25.7"
   },
